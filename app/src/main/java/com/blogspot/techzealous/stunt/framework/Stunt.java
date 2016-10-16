@@ -19,13 +19,13 @@ public class Stunt extends Object implements StuntInterface {
 
     private static final String TAG = "Stunt";
 
-    private Stunt mInstance;
-    private StuntInterface mImpl;
+    private static Stunt mInstance;
+    private static StuntInterface mImpl;
+    private static boolean mIsReportingEnabled = true;
+
     private WeakReference<Activity> mWeakContext;
     private ExecutorService mExecutorService;
     private Handler mHandlerUI;
-    private boolean mIsReportingEnabled;
-    private String mApiKey;
     private int mReportRate;
     private int mReportRateMilliseconds;
     private int mReportRateEventCount;
@@ -40,19 +40,6 @@ public class Stunt extends Object implements StuntInterface {
         mExecutorService = Executors.newSingleThreadExecutor();
         mHandlerUI = new Handler(Looper.getMainLooper());
 
-        try {
-            ApplicationInfo ai = aActivity.getPackageManager().getApplicationInfo(aActivity.getPackageName(), PackageManager.GET_META_DATA);
-            Bundle bundle = ai.metaData;
-            mApiKey = bundle.getString(StuntConst.API_KEY);
-            mIsReportingEnabled = bundle.getBoolean(StuntConst.API_KEY_ENABLED);
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.e(TAG, "Failed to load meta-data, NameNotFound=" + e.getMessage());
-        } catch (NullPointerException e) {
-            Log.e(TAG, "Failed to load meta-data, NullPointer=" + e.getMessage());
-        }
-    }
-
-    public synchronized Stunt getInstance(Activity aActivity) {
         if(mIsReportingEnabled) {
             if(mImpl == null || mImpl instanceof StuntImplBlank) {
                 mImpl = new StuntImplDefault();
@@ -61,6 +48,23 @@ public class Stunt extends Object implements StuntInterface {
             if(mImpl == null || mImpl instanceof StuntImplDefault) {
                 mImpl = new StuntImplBlank();
             }
+        }
+
+        try {
+            ApplicationInfo ai = aActivity.getPackageManager().getApplicationInfo(aActivity.getPackageName(), PackageManager.GET_META_DATA);
+            Bundle bundle = ai.metaData;
+            StuntConst.setApiKey(bundle.getString(StuntConst.API_KEY));
+            mIsReportingEnabled = bundle.getBoolean(StuntConst.API_KEY_ENABLED);
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(TAG, "Failed to load meta-data, NameNotFound=" + e.getMessage());
+        } catch (NullPointerException e) {
+            Log.e(TAG, "Failed to load meta-data, NullPointer=" + e.getMessage());
+        }
+    }
+
+    public static synchronized Stunt getInstance(Activity aActivity) {
+        if(mInstance == null) {
+            mInstance = new Stunt(aActivity);
         }
         return mInstance;
     }
@@ -89,29 +93,43 @@ public class Stunt extends Object implements StuntInterface {
         }
     }
 
-    public String getApiKey(String aApiKey) {
-        return mApiKey;
+    public String getApiKey() {
+        return StuntConst.getApiKey();
+    }
+
+    public void setApiKey(String aApiKey) {
+        StuntConst.setApiKey(aApiKey);
     }
 
     /* StuntInterface */
     @Override
-    public void report(String aString) {
-
+    public void report(final String aString) {
+        mExecutorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                mImpl.report(aString);
+            }
+        });
     }
 
     @Override
-    public void report(Bitmap aBitmap) {
-
+    public void report(final Bitmap aBitmap) {
+        mExecutorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                mImpl.report(aBitmap);
+            }
+        });
     }
 
     @Override
     public void reportFile(String aFilePath) {
-
+        mImpl.reportFile(aFilePath);
     }
 
     @Override
     public void report(File aFile) {
-
+        mImpl.report(aFile);
     }
 
     @Override
@@ -126,42 +144,42 @@ public class Stunt extends Object implements StuntInterface {
 
     @Override
     public void log(String aTag, String aMessage) {
-
+        mImpl.log(aTag, aMessage);
     }
 
     @Override
     public void log(String aTag, String aMessage, Bitmap aBitmap) {
-
+        mImpl.log(aTag, aMessage, aBitmap);
     }
 
     @Override
     public void log(String aTag, String aMessage, String aFilePath) {
-
+        mImpl.log(aTag, aMessage, aFilePath);
     }
 
     @Override
     public void log(String aTag, String aMessage, File aFile) {
-
+        mImpl.log(aTag, aMessage, aFile);
     }
 
     @Override
     public void log(int aLogLevel, String aTag, String aMessage) {
-
+        mImpl.log(aLogLevel, aTag, aMessage);
     }
 
     @Override
     public void log(int aLogLevel, String aTag, String aMessage, Bitmap aBitmap) {
-
+        mImpl.log(aLogLevel, aTag, aMessage, aBitmap);
     }
 
     @Override
     public void log(int aLogLevel, String aTag, String aMessage, File aFile) {
-
+        mImpl.log(aLogLevel, aTag, aMessage, aFile);
     }
 
     @Override
     public void log(int aLogLevel, String aTag, String aMessage, String aFilePath) {
-
+        mImpl.log(aLogLevel, aTag, aMessage, aFilePath);
     }
 
 }

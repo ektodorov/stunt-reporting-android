@@ -5,9 +5,13 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class StuntImplDefault implements StuntInterface {
 
+    private static final String TAG = "StuntImplDefault";
     private boolean mIsLoggingEnabled = true;
 
     public StuntImplDefault() {
@@ -18,17 +22,59 @@ public class StuntImplDefault implements StuntInterface {
 //    connection.setRequestProperty("Content-Encoding", "gzip");
     @Override
     public void report(String aString) {
-
+        try {
+            URL url = new URL("http://192.168.0.102:8080/echo");
+            String strResponse = StuntConst.getResponse(url, aString, aString.getBytes());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void report(Bitmap aBitmap) {
+        try {
+            URL url = new URL("http://192.168.0.102:8080/uploadimage");
+            String strResponse = StuntConst.uploadBitmap(url, aBitmap);
 
+//            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "temp.png");
+//            FileOutputStream out = null;
+//            try {
+//                out = new FileOutputStream(file.getAbsolutePath());
+//                aBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+//                Log.i(TAG, "saved bitmap, file.absolutePath=" + file.getAbsolutePath());
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            } finally {
+//                try {
+//                    if (out != null) {
+//                        out.close();
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            URL url = new URL("http://192.168.0.102:8080/uploadimage");
+//            String strResponse = StuntConst.uploadFile(url, file.getAbsolutePath());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void reportFile(String aFilePath) {
-
+        try {
+            URL url = new URL("http://192.168.0.102:8080/uploadimage");
+            String strResponse = StuntConst.uploadFile(url, aFilePath);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
