@@ -24,7 +24,7 @@ public class StuntImplDefault implements StuntInterface {
     public void report(String aString) {
         try {
             URL url = new URL("http://192.168.0.102:8080/echo");
-            String strResponse = StuntConst.getResponse(url, aString, aString.getBytes());
+            String strResponse = StuntConst.getResponse(url, aString);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -79,7 +79,14 @@ public class StuntImplDefault implements StuntInterface {
 
     @Override
     public void report(File aFile) {
-
+        try {
+            URL url = new URL("http://192.168.0.102:8080/uploadimage");
+            String strResponse = StuntConst.uploadFile(url, aFile.getAbsolutePath());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

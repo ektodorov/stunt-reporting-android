@@ -123,13 +123,23 @@ public class Stunt extends Object implements StuntInterface {
     }
 
     @Override
-    public void reportFile(String aFilePath) {
-        mImpl.reportFile(aFilePath);
+    public void reportFile(final String aFilePath) {
+        mExecutorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                mImpl.reportFile(aFilePath);
+            }
+        });
     }
 
     @Override
-    public void report(File aFile) {
-        mImpl.report(aFile);
+    public void report(final File aFile) {
+        mExecutorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                mImpl.report(aFile);
+            }
+        });
     }
 
     @Override

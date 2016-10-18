@@ -193,7 +193,7 @@ public class StuntConst {
             dos.writeBytes(STR_symbol_hyphen + STR_symbol_hyphen + STR_boundary + STR_symbol_hyphen + STR_symbol_hyphen + STR_symbol_lineFeed);
 
             responseCode = conn.getResponseCode();
-            Log.i(TAG, "uploadBitmap, responseCode=" + responseCode);
+            Log.i(TAG, "uploadFile, responseCode=" + responseCode);
             if(HttpURLConnection.HTTP_OK <= responseCode && responseCode < HttpURLConnection.HTTP_MULT_CHOICE) {
                 bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             } else {
@@ -203,13 +203,13 @@ public class StuntConst {
             while((line = bufferedReader.readLine()) != null) {
                 sb.append(line);
             }
-            Log.i(TAG, "uploadBitmap, response=" + sb.toString());
+            Log.i(TAG, "uploadFile, response=" + sb.toString());
         } catch (MalformedURLException ex) {
             ex.printStackTrace();
-            Log.e(TAG, "uploadBitmap, MalformedURLException=" + ex.getMessage(), ex);
+            Log.e(TAG, "uploadFile, MalformedURLException=" + ex.getMessage(), ex);
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e(TAG, "uploadBitmap, Exception=" + e.getMessage(), e);
+            Log.e(TAG, "uploadFile, Exception=" + e.getMessage(), e);
         } finally {
             try {
                 if(dos != null) {
@@ -226,7 +226,7 @@ public class StuntConst {
         return sb.toString();
     }
 
-    public static String getResponse(URL url, String body, byte[] bytesBody) throws IOException {
+    public static String getResponse(URL url, String aMessage) throws IOException {
         HttpURLConnection urlConnection = null;
         DataOutputStream dataOutputStream = null;
         BufferedReader bufferedReader = null;
@@ -236,23 +236,23 @@ public class StuntConst {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod(STR_POST);
             urlConnection.setDoInput(true);
-            if(body != null) {urlConnection.setDoOutput(true);}
+            if(aMessage != null) {urlConnection.setDoOutput(true);}
             urlConnection.addRequestProperty(STR_Content_Type, STR_application_json_charset_utf8);
             urlConnection.addRequestProperty(STR_Authorization, sApiKey);
 
-            if(body != null) {
-                urlConnection.addRequestProperty(STR_Content_Length, Integer.toString(body.getBytes().length));
+            if(aMessage != null) {
+                urlConnection.addRequestProperty(STR_Content_Length, Integer.toString(aMessage.getBytes().length));
                 Log.i(TAG, "Headers=\n" + getRequestHeaders(urlConnection));
                 dataOutputStream = new DataOutputStream(urlConnection.getOutputStream());
                 //dataOutputStream.writeBytes(body);
-                dataOutputStream.write(body.getBytes());
+                dataOutputStream.write(aMessage.getBytes());
                 dataOutputStream.flush();
             } else {
                 Log.i(TAG, "Headers=\n" + getRequestHeaders(urlConnection));
             }
 
             Log.i(TAG, "url=" + url);
-            Log.i(TAG, "body=" + body);
+            Log.i(TAG, "body=" + aMessage);
 
             int responseCode = urlConnection.getResponseCode();
             if(HttpURLConnection.HTTP_OK <= responseCode && responseCode < HttpURLConnection.HTTP_MULT_CHOICE) {
