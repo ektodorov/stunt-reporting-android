@@ -3,6 +3,11 @@ package com.blogspot.techzealous.stunt.framework;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.blogspot.techzealous.stunt.MainActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -10,6 +15,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -19,14 +25,17 @@ import java.util.zip.GZIPOutputStream;
 
 public class StuntConst {
 
+    private static WeakReference<MainActivity> mWeakActivity;
     private static final String TAG = "StuntConst";
 
     private static String sApiKey;
+    private static long sSequence;
 
-    public static final String URL_service = "http://192.168.0.102:8080";
+    public static final String URL_service = "http://192.168.0.100:8080";
     public static final String URL_echo = URL_service + "/echo";
     public static final String URL_message = URL_service + "/message";
     public static final String URL_uploadimage = URL_service + "/uploadimage";
+    public static final String URL_uploadfile = URL_service + "/uploadfile";
 
     public static final int REPORTRATE_INSTANT = 0;
     public static final int REPORTRATE_TIME = 1;
@@ -53,7 +62,11 @@ public class StuntConst {
 
     public static final String API_KEY = "stunt_api_key";
     public static final String API_KEY_ENABLED = "stunt_enabled";
-    public static final String API_KEY_uploadimage = "uploadimage";
+    public static final String API_KEY_image = "image";
+    public static final String API_KEY_file = "file";
+    public static final String API_KEY_sequence = "sequence";
+    public static final String API_KEY_time = "time";
+    public static final String API_KEY_message = "message";
 
     private StuntConst() {
         super();
@@ -105,21 +118,32 @@ public class StuntConst {
             conn.setRequestProperty(STR_Connection, STR_Keep_Alive);
             conn.setRequestProperty(STR_ENCTYPE, STR_multipart_form_data);
             conn.setRequestProperty(STR_Content_Type, STR_multipart_form_data_boundary);
-            conn.setRequestProperty(API_KEY_uploadimage, fileName);
 
+            //write message
             dos = new DataOutputStream(conn.getOutputStream());
             dos.writeBytes(STR_symbol_hyphen + STR_symbol_hyphen + STR_boundary + STR_symbol_lineFeed);
-            dos.writeBytes("Content-Disposition: form-data; name=\"" + API_KEY_uploadimage + "\";filename=\"" + fileName + "\"" + STR_symbol_lineFeed);
+            dos.writeBytes("Content-Disposition: form-data; name=\"" + API_KEY_message + "\"" + STR_symbol_lineFeed);
+            dos.writeBytes(STR_symbol_lineFeed);
+            sSequence++;
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put(API_KEY_sequence, sSequence);
+            jsonBody.put(API_KEY_time, System.currentTimeMillis());
+            String strMessage = jsonBody.toString();
+            dos.writeBytes(strMessage);
             dos.writeBytes(STR_symbol_lineFeed);
 
-            // create a buffer of  maximum size
+            //write bitmap
+            dos.writeBytes(STR_symbol_hyphen + STR_symbol_hyphen + STR_boundary + STR_symbol_lineFeed);
+            dos.writeBytes("Content-Disposition: form-data; name=\"" + API_KEY_image + "\";filename=\"" + fileName + "\"" + STR_symbol_lineFeed);
+            dos.writeBytes(STR_symbol_lineFeed);
             bos = new ByteArrayOutputStream();
             aBitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
             byte[] bytesBitmap = bos.toByteArray();
             //dos.write(bytesBitmap, 0, bytesBitmap.length);
             dos.write(bytesBitmap);
-            // send multipart form data necesssary after file data...
             dos.writeBytes(STR_symbol_lineFeed);
+
+            // send multipart form data necessary at end of message
             dos.writeBytes(STR_symbol_hyphen + STR_symbol_hyphen + STR_boundary + STR_symbol_hyphen + STR_symbol_hyphen + STR_symbol_lineFeed);
 
             responseCode = conn.getResponseCode();
@@ -175,21 +199,34 @@ public class StuntConst {
             conn.setRequestProperty(STR_Connection, STR_Keep_Alive);
             conn.setRequestProperty(STR_ENCTYPE, STR_multipart_form_data);
             conn.setRequestProperty(STR_Content_Type, STR_multipart_form_data_boundary);
-            conn.setRequestProperty(API_KEY_uploadimage, fileName);
+            conn.setRequestProperty(API_KEY_file, fileName);
 
+            //write message
             dos = new DataOutputStream(conn.getOutputStream());
             dos.writeBytes(STR_symbol_hyphen + STR_symbol_hyphen + STR_boundary + STR_symbol_lineFeed);
-            dos.writeBytes("Content-Disposition: form-data; name=\"" + API_KEY_uploadimage + "\";filename=\"" + fileName + "\"" + STR_symbol_lineFeed);
+            dos.writeBytes("Content-Disposition: form-data; name=\"" + API_KEY_message + "\"" + STR_symbol_lineFeed);
+            dos.writeBytes(STR_symbol_lineFeed);
+            sSequence++;
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put(API_KEY_sequence, sSequence);
+            jsonBody.put(API_KEY_time, System.currentTimeMillis());
+            String strMessage = jsonBody.toString();
+            dos.writeBytes(strMessage);
             dos.writeBytes(STR_symbol_lineFeed);
 
+            //write file
+            dos.writeBytes(STR_symbol_hyphen + STR_symbol_hyphen + STR_boundary + STR_symbol_lineFeed);
+            dos.writeBytes("Content-Disposition: form-data; name=\"" + API_KEY_file + "\";filename=\"" + fileName + "\"" + STR_symbol_lineFeed);
+            dos.writeBytes(STR_symbol_lineFeed);
             fileInputStream = new FileInputStream(new File(aFilePath));
             byte[] byteBuffer = new byte[8192];
             int bytesRead = 0;
             while ((bytesRead = fileInputStream.read(byteBuffer)) != - 1) {
                 dos.write(byteBuffer, 0, bytesRead);
             }
-            // send multipart form data necesssary after file data...
             dos.writeBytes(STR_symbol_lineFeed);
+
+            // send multipart form data necessary at end of message
             dos.writeBytes(STR_symbol_hyphen + STR_symbol_hyphen + STR_boundary + STR_symbol_hyphen + STR_symbol_hyphen + STR_symbol_lineFeed);
 
             responseCode = conn.getResponseCode();
@@ -232,6 +269,7 @@ public class StuntConst {
         BufferedReader bufferedReader = null;
         StringBuilder sb = new StringBuilder();
         IOException ioException = null;
+        String strBody = null;
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod(STR_POST);
@@ -241,18 +279,25 @@ public class StuntConst {
             urlConnection.addRequestProperty(STR_Authorization, sApiKey);
 
             if(aMessage != null) {
-                urlConnection.addRequestProperty(STR_Content_Length, Integer.toString(aMessage.getBytes().length));
+                sSequence++;
+                JSONObject jsonBody = new JSONObject();
+                jsonBody.put(API_KEY_sequence, sSequence);
+                jsonBody.put(API_KEY_time, System.currentTimeMillis());
+                jsonBody.put(API_KEY_message, aMessage);
+                strBody = jsonBody.toString();
+
+                urlConnection.addRequestProperty(STR_Content_Length, Integer.toString(strBody.getBytes().length));
                 Log.i(TAG, "Headers=\n" + getRequestHeaders(urlConnection));
                 dataOutputStream = new DataOutputStream(urlConnection.getOutputStream());
-                //dataOutputStream.writeBytes(body);
-                dataOutputStream.write(aMessage.getBytes());
+                dataOutputStream.writeBytes(strBody);
+                //dataOutputStream.write(aMessage.getBytes());
                 dataOutputStream.flush();
             } else {
                 Log.i(TAG, "Headers=\n" + getRequestHeaders(urlConnection));
             }
 
             Log.i(TAG, "url=" + url);
-            Log.i(TAG, "body=" + aMessage);
+            Log.i(TAG, "body=" + strBody);
 
             int responseCode = urlConnection.getResponseCode();
             if(HttpURLConnection.HTTP_OK <= responseCode && responseCode < HttpURLConnection.HTTP_MULT_CHOICE) {
@@ -266,6 +311,8 @@ public class StuntConst {
             }
         } catch (IOException e) {
             ioException = e;
+        } catch (JSONException e) {
+            e.printStackTrace();
         } finally {
             if(dataOutputStream != null) {
                 try {dataOutputStream.close();} catch (IOException e) {/* do nothing */}
@@ -296,5 +343,13 @@ public class StuntConst {
             }
         }
         return headers.toString();
+    }
+
+    public static void setMainActivity(MainActivity aActivity) {
+        mWeakActivity = new WeakReference<MainActivity>(aActivity);
+    }
+
+    public static MainActivity getMainActivity() {
+        return mWeakActivity.get();
     }
 }

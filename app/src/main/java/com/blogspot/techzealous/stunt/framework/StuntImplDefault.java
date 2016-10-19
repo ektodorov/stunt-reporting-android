@@ -23,7 +23,7 @@ public class StuntImplDefault implements StuntInterface {
     @Override
     public void report(String aString) {
         try {
-            URL url = new URL("http://192.168.0.102:8080/echo");
+            URL url = new URL(StuntConst.URL_echo);
             String strResponse = StuntConst.getResponse(url, aString);
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -35,7 +35,7 @@ public class StuntImplDefault implements StuntInterface {
     @Override
     public void report(Bitmap aBitmap) {
         try {
-            URL url = new URL("http://192.168.0.102:8080/uploadimage");
+            URL url = new URL(StuntConst.URL_uploadimage);
             String strResponse = StuntConst.uploadBitmap(url, aBitmap);
 
 //            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "temp.png");
@@ -68,7 +68,7 @@ public class StuntImplDefault implements StuntInterface {
     @Override
     public void reportFile(String aFilePath) {
         try {
-            URL url = new URL("http://192.168.0.102:8080/uploadimage");
+            URL url = new URL(StuntConst.URL_uploadfile);
             String strResponse = StuntConst.uploadFile(url, aFilePath);
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -80,7 +80,7 @@ public class StuntImplDefault implements StuntInterface {
     @Override
     public void report(File aFile) {
         try {
-            URL url = new URL("http://192.168.0.102:8080/uploadimage");
+            URL url = new URL(StuntConst.URL_uploadfile);
             String strResponse = StuntConst.uploadFile(url, aFile.getAbsolutePath());
         } catch (MalformedURLException e) {
             e.printStackTrace();

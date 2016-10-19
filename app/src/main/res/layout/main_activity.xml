@@ -33,6 +33,6 @@
         android:textColor="@android:color/black"
         android:textSize="16sp"
         android:text="This is some content text."
-        android:id="@+id/textViewMain"/>
+        android:id="@+id/textViewTime"/>
 
 </RelativeLayout>
