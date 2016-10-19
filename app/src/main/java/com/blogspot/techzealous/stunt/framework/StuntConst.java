@@ -118,6 +118,7 @@ public class StuntConst {
             conn.setRequestProperty(STR_Connection, STR_Keep_Alive);
             conn.setRequestProperty(STR_ENCTYPE, STR_multipart_form_data);
             conn.setRequestProperty(STR_Content_Type, STR_multipart_form_data_boundary);
+            conn.addRequestProperty(STR_Authorization, sApiKey);
 
             //write message
             dos = new DataOutputStream(conn.getOutputStream());
@@ -199,7 +200,7 @@ public class StuntConst {
             conn.setRequestProperty(STR_Connection, STR_Keep_Alive);
             conn.setRequestProperty(STR_ENCTYPE, STR_multipart_form_data);
             conn.setRequestProperty(STR_Content_Type, STR_multipart_form_data_boundary);
-            conn.setRequestProperty(API_KEY_file, fileName);
+            conn.addRequestProperty(STR_Authorization, sApiKey);
 
             //write message
             dos = new DataOutputStream(conn.getOutputStream());
@@ -274,7 +275,7 @@ public class StuntConst {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod(STR_POST);
             urlConnection.setDoInput(true);
-            if(aMessage != null) {urlConnection.setDoOutput(true);}
+            urlConnection.setDoOutput(true);
             urlConnection.addRequestProperty(STR_Content_Type, STR_application_json_charset_utf8);
             urlConnection.addRequestProperty(STR_Authorization, sApiKey);
 

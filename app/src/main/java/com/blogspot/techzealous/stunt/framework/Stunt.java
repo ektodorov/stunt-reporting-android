@@ -40,16 +40,6 @@ public class Stunt extends Object implements StuntInterface {
         mExecutorService = Executors.newSingleThreadExecutor();
         mHandlerUI = new Handler(Looper.getMainLooper());
 
-        if(mIsReportingEnabled) {
-            if(mImpl == null || mImpl instanceof StuntImplBlank) {
-                mImpl = new StuntImplDefault();
-            }
-        } else {
-            if(mImpl == null || mImpl instanceof StuntImplDefault) {
-                mImpl = new StuntImplBlank();
-            }
-        }
-
         try {
             ApplicationInfo ai = aActivity.getPackageManager().getApplicationInfo(aActivity.getPackageName(), PackageManager.GET_META_DATA);
             Bundle bundle = ai.metaData;
@@ -59,6 +49,16 @@ public class Stunt extends Object implements StuntInterface {
             Log.e(TAG, "Failed to load meta-data, NameNotFound=" + e.getMessage());
         } catch (NullPointerException e) {
             Log.e(TAG, "Failed to load meta-data, NullPointer=" + e.getMessage());
+        }
+
+        if(mIsReportingEnabled) {
+            if(mImpl == null || mImpl instanceof StuntImplBlank) {
+                mImpl = new StuntImplDefault();
+            }
+        } else {
+            if(mImpl == null || mImpl instanceof StuntImplDefault) {
+                mImpl = new StuntImplBlank();
+            }
         }
     }
 

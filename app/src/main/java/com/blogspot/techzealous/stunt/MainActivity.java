@@ -1,6 +1,5 @@
 package com.blogspot.techzealous.stunt;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -30,13 +29,13 @@ public class MainActivity extends AppCompatActivity {
                 Stunt stunt = Stunt.getInstance(MainActivity.this);
 
                 //send message
-//                stunt.report("This is my report");
+                stunt.report("This is my report");
 
                 //send bitmap
-                mViewRoot.setDrawingCacheEnabled(true);
-                Bitmap bitmap = Bitmap.createBitmap(mViewRoot.getDrawingCache());
-                mViewRoot.setDrawingCacheEnabled(false);
-                stunt.report(bitmap);
+//                mViewRoot.setDrawingCacheEnabled(true);
+//                Bitmap bitmap = Bitmap.createBitmap(mViewRoot.getDrawingCache());
+//                mViewRoot.setDrawingCacheEnabled(false);
+//                stunt.report(bitmap);
             }
         });
     }
