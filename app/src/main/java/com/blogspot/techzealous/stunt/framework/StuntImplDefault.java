@@ -23,7 +23,7 @@ public class StuntImplDefault implements StuntInterface {
     @Override
     public void report(String aString) {
         try {
-            URL url = new URL(StuntConst.URL_echo);
+            URL url = new URL(StuntConst.URL_message);
             String strResponse = StuntConst.getResponse(url, aString);
         } catch (MalformedURLException e) {
             e.printStackTrace();

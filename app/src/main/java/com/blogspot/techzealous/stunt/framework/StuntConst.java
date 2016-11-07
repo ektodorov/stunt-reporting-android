@@ -29,6 +29,7 @@ public class StuntConst {
     private static final String TAG = "StuntConst";
 
     private static String sApiKey;
+    private static String sClientId;
     private static long sSequence;
 
     public static final String URL_service = "http://192.168.0.100:8080";
@@ -67,6 +68,7 @@ public class StuntConst {
     public static final String API_KEY_sequence = "sequence";
     public static final String API_KEY_time = "time";
     public static final String API_KEY_message = "message";
+    public static final String API_KEY_clientid = "clientid";
 
     private StuntConst() {
         super();
@@ -78,6 +80,14 @@ public class StuntConst {
 
     public static void setApiKey(String aApiKey) {
         sApiKey = aApiKey;
+    }
+
+    public static String getClientId() {
+        return sClientId;
+    }
+
+    public static void setClientId(String aClientId) {
+        sClientId = aClientId;
     }
 
     public static ByteArrayOutputStream gzip(byte[] input) throws Exception {
@@ -129,6 +139,7 @@ public class StuntConst {
             JSONObject jsonBody = new JSONObject();
             jsonBody.put(API_KEY_sequence, sSequence);
             jsonBody.put(API_KEY_time, System.currentTimeMillis());
+            jsonBody.put(API_KEY_clientid, sClientId);
             String strMessage = jsonBody.toString();
             dos.writeBytes(strMessage);
             dos.writeBytes(STR_symbol_lineFeed);
@@ -211,6 +222,7 @@ public class StuntConst {
             JSONObject jsonBody = new JSONObject();
             jsonBody.put(API_KEY_sequence, sSequence);
             jsonBody.put(API_KEY_time, System.currentTimeMillis());
+            jsonBody.put(API_KEY_clientid, sClientId);
             String strMessage = jsonBody.toString();
             dos.writeBytes(strMessage);
             dos.writeBytes(STR_symbol_lineFeed);
@@ -285,6 +297,7 @@ public class StuntConst {
                 jsonBody.put(API_KEY_sequence, sSequence);
                 jsonBody.put(API_KEY_time, System.currentTimeMillis());
                 jsonBody.put(API_KEY_message, aMessage);
+                jsonBody.put(API_KEY_clientid, sClientId);
                 strBody = jsonBody.toString();
 
                 urlConnection.addRequestProperty(STR_Content_Length, Integer.toString(strBody.getBytes().length));

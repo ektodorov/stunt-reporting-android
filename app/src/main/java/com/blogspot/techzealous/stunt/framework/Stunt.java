@@ -12,6 +12,7 @@ import android.util.Log;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -45,6 +46,7 @@ public class Stunt extends Object implements StuntInterface {
             Bundle bundle = ai.metaData;
             StuntConst.setApiKey(bundle.getString(StuntConst.API_KEY));
             mIsReportingEnabled = bundle.getBoolean(StuntConst.API_KEY_ENABLED);
+            StuntConst.setClientId(UUID.randomUUID().toString());
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, "Failed to load meta-data, NameNotFound=" + e.getMessage());
         } catch (NullPointerException e) {
