@@ -16,6 +16,8 @@ import java.io.PrintWriter;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
+
     private View mViewRoot;
     private Button mButtonSendReportString;
     private Button mButtonSendReportBitmap;
@@ -29,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        mViewRoot = (View)findViewById(R.id.relativeLayoutRootMain);
+        mViewRoot = (View)findViewById(R.id.scrollViewRoot);
         mButtonSendReportString = (Button)findViewById(R.id.buttonSendReportString);
         mButtonSendReportBitmap = (Button)findViewById(R.id.buttonSendReportBitmap);
         mButtonSendReportFile = (Button)findViewById(R.id.buttonSendReportFile);
@@ -54,14 +56,14 @@ public class MainActivity extends AppCompatActivity {
                 mViewRoot.setDrawingCacheEnabled(true);
                 Bitmap bitmap = Bitmap.createBitmap(mViewRoot.getDrawingCache());
                 mViewRoot.setDrawingCacheEnabled(false);
-                stunt.report(bitmap);
+                stunt.report(bitmap, "screenshot.png");
             }
         });
 
         mButtonSendReportFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                File fileText = new File(Environment.getExternalStorageDirectory() + "text.txt");
+                File fileText = new File(Environment.getExternalStorageDirectory(), "text.txt");
                 PrintWriter pw = null;
                 try {
                     pw = new PrintWriter(fileText);

@@ -44,7 +44,7 @@ public class Stunt extends Object implements StuntInterface {
         try {
             ApplicationInfo ai = aActivity.getPackageManager().getApplicationInfo(aActivity.getPackageName(), PackageManager.GET_META_DATA);
             Bundle bundle = ai.metaData;
-            StuntConst.setApiKey(bundle.getString(StuntConst.API_KEY));
+            StuntConst.setApiKey(bundle.getString(StuntConst.API_KEY_STUNT_API_KEY));
             mIsReportingEnabled = bundle.getBoolean(StuntConst.API_KEY_ENABLED);
             StuntConst.setClientId(UUID.randomUUID().toString());
         } catch (PackageManager.NameNotFoundException e) {
@@ -115,21 +115,21 @@ public class Stunt extends Object implements StuntInterface {
     }
 
     @Override
-    public void report(final Bitmap aBitmap) {
+    public void report(final Bitmap aBitmap, final String aFileName) {
         mExecutorService.execute(new Runnable() {
             @Override
             public void run() {
-                mImpl.report(aBitmap);
+                mImpl.report(aBitmap, aFileName);
             }
         });
     }
 
     @Override
-    public void reportFile(final String aFilePath) {
+    public void reportFile(final String aFilePath, final String aFileName) {
         mExecutorService.execute(new Runnable() {
             @Override
             public void run() {
-                mImpl.reportFile(aFilePath);
+                mImpl.reportFile(aFilePath, aFileName);
             }
         });
     }
@@ -160,13 +160,13 @@ public class Stunt extends Object implements StuntInterface {
     }
 
     @Override
-    public void log(String aTag, String aMessage, Bitmap aBitmap) {
-        mImpl.log(aTag, aMessage, aBitmap);
+    public void log(String aTag, String aMessage, Bitmap aBitmap, String aFileName) {
+        mImpl.log(aTag, aMessage, aBitmap, aFileName);
     }
 
     @Override
-    public void log(String aTag, String aMessage, String aFilePath) {
-        mImpl.log(aTag, aMessage, aFilePath);
+    public void log(String aTag, String aMessage, String aFilePath, String aFileName) {
+        mImpl.log(aTag, aMessage, aFilePath, aFileName);
     }
 
     @Override
@@ -180,8 +180,8 @@ public class Stunt extends Object implements StuntInterface {
     }
 
     @Override
-    public void log(int aLogLevel, String aTag, String aMessage, Bitmap aBitmap) {
-        mImpl.log(aLogLevel, aTag, aMessage, aBitmap);
+    public void log(int aLogLevel, String aTag, String aMessage, Bitmap aBitmap, String aFileName) {
+        mImpl.log(aLogLevel, aTag, aMessage, aBitmap, aFileName);
     }
 
     @Override
@@ -190,8 +190,8 @@ public class Stunt extends Object implements StuntInterface {
     }
 
     @Override
-    public void log(int aLogLevel, String aTag, String aMessage, String aFilePath) {
-        mImpl.log(aLogLevel, aTag, aMessage, aFilePath);
+    public void log(int aLogLevel, String aTag, String aMessage, String aFilePath, String aFileName) {
+        mImpl.log(aLogLevel, aTag, aMessage, aFilePath, aFileName);
     }
 
 }

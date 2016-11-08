@@ -28,6 +28,7 @@ public class StuntConst {
     private static WeakReference<MainActivity> mWeakActivity;
     private static final String TAG = "StuntConst";
 
+    private static String sAuthToken;
     private static String sApiKey;
     private static String sClientId;
     private static long sSequence;
@@ -53,6 +54,7 @@ public class StuntConst {
     public static final String STR_symbol_newline = "\n";
     public static final String STR_symbol_lineFeed = STR_symbol_carriage_return + STR_symbol_newline;
     public static final String STR_symbol_hyphen = "-";
+    public static final String STR_symbol_forward_slash = "/";
     public static final String STR_boundary = "*************************7d41b838504d8";
     public static final String STR_Connection = "Connection";
     public static final String STR_Keep_Alive = "Keep-Alive";
@@ -61,7 +63,8 @@ public class StuntConst {
     public static final String STR_ENCTYPE = "ENCTYPE";
     public static final String STR_application_json_charset_utf8 = "application/json; charset=utf-8";
 
-    public static final String API_KEY = "stunt_api_key";
+    public static final String API_KEY = "apikey";
+    public static final String API_KEY_STUNT_API_KEY = "stunt_api_key";
     public static final String API_KEY_ENABLED = "stunt_enabled";
     public static final String API_KEY_image = "image";
     public static final String API_KEY_file = "file";
@@ -72,6 +75,14 @@ public class StuntConst {
 
     private StuntConst() {
         super();
+    }
+
+    public static String getAuthToken() {
+        return sAuthToken;
+    }
+
+    public static void setAuthToken(String aAuthToken) {
+        sAuthToken = aAuthToken;
     }
 
     public static String getApiKey() {
@@ -110,8 +121,11 @@ public class StuntConst {
         return byteArrayOS;
     }
 
-    public static String uploadBitmap(URL aUrl, Bitmap aBitmap) {
-        String fileName = "screenshot.png";
+    public static String uploadBitmap(URL aUrl, Bitmap aBitmap, String aFileName) {
+        String fileName = aFileName;
+        if(fileName == null) {
+            fileName = aBitmap.getWidth() + "x" + aBitmap.getHeight() + ".png";
+        }
 
         int responseCode = 0;
         HttpURLConnection conn = null;
@@ -128,7 +142,7 @@ public class StuntConst {
             conn.setRequestProperty(STR_Connection, STR_Keep_Alive);
             conn.setRequestProperty(STR_ENCTYPE, STR_multipart_form_data);
             conn.setRequestProperty(STR_Content_Type, STR_multipart_form_data_boundary);
-            conn.addRequestProperty(STR_Authorization, sApiKey);
+            conn.addRequestProperty(STR_Authorization, sAuthToken);
 
             //write message
             dos = new DataOutputStream(conn.getOutputStream());
@@ -137,6 +151,7 @@ public class StuntConst {
             dos.writeBytes(STR_symbol_lineFeed);
             sSequence++;
             JSONObject jsonBody = new JSONObject();
+            jsonBody.put(API_KEY, sApiKey);
             jsonBody.put(API_KEY_sequence, sSequence);
             jsonBody.put(API_KEY_time, System.currentTimeMillis());
             jsonBody.put(API_KEY_clientid, sClientId);
@@ -192,8 +207,12 @@ public class StuntConst {
         return sb.toString();
     }
 
-    public static String uploadFile(URL aUrl, String aFilePath) {
-        String fileName = "screenshot.png";
+    public static String uploadFile(URL aUrl, String aFilePath, String aFileName) {
+        String fileName = aFileName;
+        if(fileName == null) {
+            int index = aFilePath.lastIndexOf(File.pathSeparator) + 1;
+            fileName = aFilePath.substring(index);
+        }
 
         int responseCode = 0;
         HttpURLConnection conn = null;
@@ -211,7 +230,7 @@ public class StuntConst {
             conn.setRequestProperty(STR_Connection, STR_Keep_Alive);
             conn.setRequestProperty(STR_ENCTYPE, STR_multipart_form_data);
             conn.setRequestProperty(STR_Content_Type, STR_multipart_form_data_boundary);
-            conn.addRequestProperty(STR_Authorization, sApiKey);
+            conn.addRequestProperty(STR_Authorization, sAuthToken);
 
             //write message
             dos = new DataOutputStream(conn.getOutputStream());
@@ -220,6 +239,7 @@ public class StuntConst {
             dos.writeBytes(STR_symbol_lineFeed);
             sSequence++;
             JSONObject jsonBody = new JSONObject();
+            jsonBody.put(API_KEY, sApiKey);
             jsonBody.put(API_KEY_sequence, sSequence);
             jsonBody.put(API_KEY_time, System.currentTimeMillis());
             jsonBody.put(API_KEY_clientid, sClientId);
@@ -289,11 +309,12 @@ public class StuntConst {
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
             urlConnection.addRequestProperty(STR_Content_Type, STR_application_json_charset_utf8);
-            urlConnection.addRequestProperty(STR_Authorization, sApiKey);
+            urlConnection.addRequestProperty(STR_Authorization, sAuthToken);
 
             if(aMessage != null) {
                 sSequence++;
                 JSONObject jsonBody = new JSONObject();
+                jsonBody.put(API_KEY, sApiKey);
                 jsonBody.put(API_KEY_sequence, sSequence);
                 jsonBody.put(API_KEY_time, System.currentTimeMillis());
                 jsonBody.put(API_KEY_message, aMessage);

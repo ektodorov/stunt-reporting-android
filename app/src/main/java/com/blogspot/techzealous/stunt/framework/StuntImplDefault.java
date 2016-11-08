@@ -33,31 +33,10 @@ public class StuntImplDefault implements StuntInterface {
     }
 
     @Override
-    public void report(Bitmap aBitmap) {
+    public void report(Bitmap aBitmap, String aFileName) {
         try {
             URL url = new URL(StuntConst.URL_uploadimage);
-            String strResponse = StuntConst.uploadBitmap(url, aBitmap);
-
-//            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "temp.png");
-//            FileOutputStream out = null;
-//            try {
-//                out = new FileOutputStream(file.getAbsolutePath());
-//                aBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-//                Log.i(TAG, "saved bitmap, file.absolutePath=" + file.getAbsolutePath());
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            } finally {
-//                try {
-//                    if (out != null) {
-//                        out.close();
-//                    }
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//            URL url = new URL("http://192.168.0.102:8080/uploadimage");
-//            String strResponse = StuntConst.uploadFile(url, file.getAbsolutePath());
+            String strResponse = StuntConst.uploadBitmap(url, aBitmap, aFileName);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -66,10 +45,10 @@ public class StuntImplDefault implements StuntInterface {
     }
 
     @Override
-    public void reportFile(String aFilePath) {
+    public void reportFile(String aFilePath, String aFileName) {
         try {
             URL url = new URL(StuntConst.URL_uploadfile);
-            String strResponse = StuntConst.uploadFile(url, aFilePath);
+            String strResponse = StuntConst.uploadFile(url, aFilePath, aFileName);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -81,7 +60,7 @@ public class StuntImplDefault implements StuntInterface {
     public void report(File aFile) {
         try {
             URL url = new URL(StuntConst.URL_uploadfile);
-            String strResponse = StuntConst.uploadFile(url, aFile.getAbsolutePath());
+            String strResponse = StuntConst.uploadFile(url, aFile.getAbsolutePath(), aFile.getName());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -108,19 +87,19 @@ public class StuntImplDefault implements StuntInterface {
     }
 
     @Override
-    public void log(String aTag, String aMessage, Bitmap aBitmap) {
+    public void log(String aTag, String aMessage, Bitmap aBitmap, String aFileName) {
         if(mIsLoggingEnabled) {
             Log.i(aTag, aMessage);
         }
-        report(aBitmap);
+        report(aBitmap, aFileName);
     }
 
     @Override
-    public void log(String aTag, String aMessage, String aFilePath) {
+    public void log(String aTag, String aMessage, String aFilePath, String aFileName) {
         if(mIsLoggingEnabled) {
             Log.i(aTag, aMessage);
         }
-        report(aFilePath);
+        reportFile(aFilePath, aFileName);
     }
 
     @Override
@@ -140,11 +119,11 @@ public class StuntImplDefault implements StuntInterface {
     }
 
     @Override
-    public void log(int aLogLevel, String aTag, String aMessage, Bitmap aBitmap) {
+    public void log(int aLogLevel, String aTag, String aMessage, Bitmap aBitmap, String aFileName) {
         if(mIsLoggingEnabled) {
             Log.println(aLogLevel, aTag, aMessage);
         }
-        report(aBitmap);
+        report(aBitmap, aFileName);
     }
 
     @Override
@@ -156,11 +135,11 @@ public class StuntImplDefault implements StuntInterface {
     }
 
     @Override
-    public void log(int aLogLevel, String aTag, String aMessage, String aFilePath) {
+    public void log(int aLogLevel, String aTag, String aMessage, String aFilePath, String aFileName) {
         if(mIsLoggingEnabled) {
             Log.println(aLogLevel, aTag, aMessage);
         }
-        reportFile(aFilePath);
+        reportFile(aFilePath, aFileName);
     }
 
 

@@ -13,12 +13,12 @@ public class StuntImplBlank implements StuntInterface {
     }
 
     @Override
-    public void report(Bitmap aBitmap) {
+    public void report(Bitmap aBitmap, String aFileName) {
 
     }
 
     @Override
-    public void reportFile(String aFilePath) {
+    public void reportFile(String aFilePath, String aFileName) {
 
     }
 
@@ -43,12 +43,12 @@ public class StuntImplBlank implements StuntInterface {
     }
 
     @Override
-    public void log(String aTag, String aMessage, Bitmap aBitmap) {
+    public void log(String aTag, String aMessage, Bitmap aBitmap, String aFileName) {
 
     }
 
     @Override
-    public void log(String aTag, String aMessage, String aFilePath) {
+    public void log(String aTag, String aMessage, String aFilePath, String aFileName) {
 
     }
 
@@ -63,7 +63,7 @@ public class StuntImplBlank implements StuntInterface {
     }
 
     @Override
-    public void log(int aLogLevel, String aTag, String aMessage, Bitmap aBitmap) {
+    public void log(int aLogLevel, String aTag, String aMessage, Bitmap aBitmap, String aFileName) {
 
     }
 
@@ -73,7 +73,7 @@ public class StuntImplBlank implements StuntInterface {
     }
 
     @Override
-    public void log(int aLogLevel, String aTag, String aMessage, String aFilePath) {
+    public void log(int aLogLevel, String aTag, String aMessage, String aFilePath, String aFileName) {
 
     }
 
