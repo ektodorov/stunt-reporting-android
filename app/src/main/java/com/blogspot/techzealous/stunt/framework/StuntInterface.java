@@ -8,9 +8,9 @@ import java.io.File;
 public interface StuntInterface {
 
     public void report(String aString);
-    public void report(Bitmap aBitmap, String aFileName);
-    public void reportFile(String aFilePath, String aFileName);
-    public void report(File aFile);
+    public void report(String aMessage, Bitmap aBitmap, String aFileName);
+    public void reportFile(String aMessage, String aFilePath, String aFileName);
+    public void report(String aMessage, File aFile);
 
     public void setLoggingEnabled(boolean aIsEnabled);
     public boolean getLoggingEnabled();

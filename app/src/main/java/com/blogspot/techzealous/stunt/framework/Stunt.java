@@ -115,31 +115,31 @@ public class Stunt extends Object implements StuntInterface {
     }
 
     @Override
-    public void report(final Bitmap aBitmap, final String aFileName) {
+    public void report(final String aMessage, final Bitmap aBitmap, final String aFileName) {
         mExecutorService.execute(new Runnable() {
             @Override
             public void run() {
-                mImpl.report(aBitmap, aFileName);
+                mImpl.report(aMessage, aBitmap, aFileName);
             }
         });
     }
 
     @Override
-    public void reportFile(final String aFilePath, final String aFileName) {
+    public void reportFile(final String aMessage, final String aFilePath, final String aFileName) {
         mExecutorService.execute(new Runnable() {
             @Override
             public void run() {
-                mImpl.reportFile(aFilePath, aFileName);
+                mImpl.reportFile(aMessage, aFilePath, aFileName);
             }
         });
     }
 
     @Override
-    public void report(final File aFile) {
+    public void report(final String aMessage, final File aFile) {
         mExecutorService.execute(new Runnable() {
             @Override
             public void run() {
-                mImpl.report(aFile);
+                mImpl.report(aMessage, aFile);
             }
         });
     }

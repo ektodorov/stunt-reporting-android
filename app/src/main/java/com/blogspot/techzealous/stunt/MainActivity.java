@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 mViewRoot.setDrawingCacheEnabled(true);
                 Bitmap bitmap = Bitmap.createBitmap(mViewRoot.getDrawingCache());
                 mViewRoot.setDrawingCacheEnabled(false);
-                stunt.report(bitmap, "screenshot.png");
+                stunt.report("Screenshot of MainActivity", bitmap, "screenshot.png");
             }
         });
 
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 if(!fileText.exists()) {return;}
 
                 Stunt stunt = Stunt.getInstance(MainActivity.this);
-                stunt.report(fileText);
+                stunt.report("Saved text.txt", fileText);
                 mCount++;
             }
         });

@@ -33,10 +33,10 @@ public class StuntImplDefault implements StuntInterface {
     }
 
     @Override
-    public void report(Bitmap aBitmap, String aFileName) {
+    public void report(String aMessage, Bitmap aBitmap, String aFileName) {
         try {
             URL url = new URL(StuntConst.URL_uploadimage);
-            String strResponse = StuntConst.uploadBitmap(url, aBitmap, aFileName);
+            String strResponse = StuntConst.uploadBitmap(url, aMessage, aBitmap, aFileName);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -45,10 +45,10 @@ public class StuntImplDefault implements StuntInterface {
     }
 
     @Override
-    public void reportFile(String aFilePath, String aFileName) {
+    public void reportFile(String aMessage, String aFilePath, String aFileName) {
         try {
             URL url = new URL(StuntConst.URL_uploadfile);
-            String strResponse = StuntConst.uploadFile(url, aFilePath, aFileName);
+            String strResponse = StuntConst.uploadFile(url, aMessage, aFilePath, aFileName);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -57,10 +57,10 @@ public class StuntImplDefault implements StuntInterface {
     }
 
     @Override
-    public void report(File aFile) {
+    public void report(String aMessage, File aFile) {
         try {
             URL url = new URL(StuntConst.URL_uploadfile);
-            String strResponse = StuntConst.uploadFile(url, aFile.getAbsolutePath(), aFile.getName());
+            String strResponse = StuntConst.uploadFile(url, aMessage, aFile.getAbsolutePath(), aFile.getName());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -91,7 +91,7 @@ public class StuntImplDefault implements StuntInterface {
         if(mIsLoggingEnabled) {
             Log.i(aTag, aMessage);
         }
-        report(aBitmap, aFileName);
+        report(aMessage, aBitmap, aFileName);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class StuntImplDefault implements StuntInterface {
         if(mIsLoggingEnabled) {
             Log.i(aTag, aMessage);
         }
-        reportFile(aFilePath, aFileName);
+        reportFile(aMessage, aFilePath, aFileName);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class StuntImplDefault implements StuntInterface {
         if(mIsLoggingEnabled) {
             Log.i(aTag, aMessage);
         }
-        report(aFile);
+        report(aMessage, aFile);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class StuntImplDefault implements StuntInterface {
         if(mIsLoggingEnabled) {
             Log.println(aLogLevel, aTag, aMessage);
         }
-        report(aBitmap, aFileName);
+        report(aMessage, aBitmap, aFileName);
     }
 
     @Override
@@ -131,7 +131,7 @@ public class StuntImplDefault implements StuntInterface {
         if(mIsLoggingEnabled) {
             Log.println(aLogLevel, aTag, aMessage);
         }
-        report(aFile);
+        report(aMessage, aFile);
     }
 
     @Override
@@ -139,7 +139,7 @@ public class StuntImplDefault implements StuntInterface {
         if(mIsLoggingEnabled) {
             Log.println(aLogLevel, aTag, aMessage);
         }
-        reportFile(aFilePath, aFileName);
+        reportFile(aMessage, aFilePath, aFileName);
     }
 
 

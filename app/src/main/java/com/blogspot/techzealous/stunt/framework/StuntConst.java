@@ -28,6 +28,8 @@ public class StuntConst {
     private static WeakReference<MainActivity> mWeakActivity;
     private static final String TAG = "StuntConst";
 
+    //Currently it is not used. Client is authenticated with the ApiKey, in order to skip registration and getting a token.
+    //In future we may switch to token authentication.
     private static String sAuthToken;
     private static String sApiKey;
     private static String sClientId;
@@ -121,7 +123,7 @@ public class StuntConst {
         return byteArrayOS;
     }
 
-    public static String uploadBitmap(URL aUrl, Bitmap aBitmap, String aFileName) {
+    public static String uploadBitmap(URL aUrl, String aMessage, Bitmap aBitmap, String aFileName) {
         String fileName = aFileName;
         if(fileName == null) {
             fileName = aBitmap.getWidth() + "x" + aBitmap.getHeight() + ".png";
@@ -154,6 +156,7 @@ public class StuntConst {
             jsonBody.put(API_KEY, sApiKey);
             jsonBody.put(API_KEY_sequence, sSequence);
             jsonBody.put(API_KEY_time, System.currentTimeMillis());
+            jsonBody.put(API_KEY_message, aMessage);
             jsonBody.put(API_KEY_clientid, sClientId);
             String strMessage = jsonBody.toString();
             dos.writeBytes(strMessage);
@@ -207,7 +210,7 @@ public class StuntConst {
         return sb.toString();
     }
 
-    public static String uploadFile(URL aUrl, String aFilePath, String aFileName) {
+    public static String uploadFile(URL aUrl, String aMessage, String aFilePath, String aFileName) {
         String fileName = aFileName;
         if(fileName == null) {
             int index = aFilePath.lastIndexOf(File.pathSeparator) + 1;
@@ -242,6 +245,7 @@ public class StuntConst {
             jsonBody.put(API_KEY, sApiKey);
             jsonBody.put(API_KEY_sequence, sSequence);
             jsonBody.put(API_KEY_time, System.currentTimeMillis());
+            jsonBody.put(API_KEY_message, aMessage);
             jsonBody.put(API_KEY_clientid, sClientId);
             String strMessage = jsonBody.toString();
             dos.writeBytes(strMessage);
