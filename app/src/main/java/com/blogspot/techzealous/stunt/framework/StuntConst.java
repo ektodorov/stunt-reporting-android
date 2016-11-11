@@ -35,9 +35,10 @@ public class StuntConst {
     private static String sClientId;
     private static long sSequence;
 
-    public static final String URL_service = "http://192.168.0.102:8080";
+    public static final String URL_service = "http://192.168.0.100:8080";
     public static final String URL_echo = URL_service + "/echo";
     public static final String URL_message = URL_service + "/message";
+    public static final String URL_clientinfo = URL_service + "/sendclientinfo";
     public static final String URL_uploadimage = URL_service + "/uploadimage";
     public static final String URL_uploadfile = URL_service + "/uploadfile";
 
@@ -74,6 +75,10 @@ public class StuntConst {
     public static final String API_KEY_time = "time";
     public static final String API_KEY_message = "message";
     public static final String API_KEY_clientid = "clientid";
+    public static final String API_KEY_clientinfo_name = "name";
+    public static final String API_KEY_clientinfo_manufacturer = "manufacturer";
+    public static final String API_KEY_clientinfo_model = "model";
+    public static final String API_KEY_clientinfo_deviceid = "deviceid";
 
     private StuntConst() {
         super();
@@ -101,6 +106,10 @@ public class StuntConst {
 
     public static void setClientId(String aClientId) {
         sClientId = aClientId;
+    }
+
+    public static long getSequence() {
+        return sSequence;
     }
 
     public static ByteArrayOutputStream gzip(byte[] input) throws Exception {
@@ -352,6 +361,69 @@ public class StuntConst {
             ioException = e;
         } catch (JSONException e) {
             e.printStackTrace();
+        } finally {
+            if(dataOutputStream != null) {
+                try {dataOutputStream.close();} catch (IOException e) {/* do nothing */}
+            }
+            if(bufferedReader != null) {
+                try {bufferedReader.close();} catch (IOException e) {/* do nothing */}
+            }
+            if(urlConnection != null) {
+                urlConnection.disconnect();
+            }
+            if(ioException != null) {
+                throw ioException;
+            }
+        }
+        String strResponse = sb.toString();
+        Log.i(TAG, "response=" + strResponse);
+        return strResponse;
+    }
+
+    public static String getResponse(URL url, JSONObject aJsonBody) throws IOException {
+        HttpURLConnection urlConnection = null;
+        DataOutputStream dataOutputStream = null;
+        BufferedReader bufferedReader = null;
+        StringBuilder sb = new StringBuilder();
+        IOException ioException = null;
+        String strBody = null;
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod(STR_POST);
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+            urlConnection.addRequestProperty(STR_Content_Type, STR_application_json_charset_utf8);
+            urlConnection.addRequestProperty(STR_Authorization, sAuthToken);
+
+            if(aJsonBody != null) {
+                sSequence++;
+                strBody = aJsonBody.toString();
+
+                urlConnection.addRequestProperty(STR_Content_Length, Integer.toString(strBody.getBytes().length));
+                Log.i(TAG, "Headers=\n" + getRequestHeaders(urlConnection));
+                dataOutputStream = new DataOutputStream(urlConnection.getOutputStream());
+                dataOutputStream.writeBytes(strBody);
+                //dataOutputStream.write(aMessage.getBytes());
+                dataOutputStream.flush();
+            } else {
+                Log.i(TAG, "Headers=\n" + getRequestHeaders(urlConnection));
+            }
+
+            Log.i(TAG, "url=" + url);
+            Log.i(TAG, "body=" + strBody);
+
+            int responseCode = urlConnection.getResponseCode();
+            if(HttpURLConnection.HTTP_OK <= responseCode && responseCode < HttpURLConnection.HTTP_MULT_CHOICE) {
+                bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+            } else {
+                bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getErrorStream()));
+            }
+            String line = null;
+            while((line = bufferedReader.readLine()) != null) {
+                sb.append(line);
+            }
+        } catch (IOException e) {
+            ioException = e;
         } finally {
             if(dataOutputStream != null) {
                 try {dataOutputStream.close();} catch (IOException e) {/* do nothing */}

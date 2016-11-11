@@ -8,24 +8,19 @@ import java.io.File;
 public class StuntImplBlank implements StuntInterface {
 
     @Override
-    public void report(String aString) {
-
-    }
+    public void report(String aString) {}
 
     @Override
-    public void report(String aMessage, Bitmap aBitmap, String aFileName) {
-
-    }
+    public void report(String aMessage, Bitmap aBitmap, String aFileName) {}
 
     @Override
-    public void reportFile(String aMessage, String aFilePath, String aFileName) {
-
-    }
+    public void reportFile(String aMessage, String aFilePath, String aFileName) {}
 
     @Override
-    public void report(String aMessage, File aFile) {
+    public void report(String aMessage, File aFile) {}
 
-    }
+    @Override
+    public void reportClientInfo(String aName, String aManufacturer, String aModel, String aDeviceId) {}
 
     @Override
     public void setLoggingEnabled(boolean aIsEnabled) {

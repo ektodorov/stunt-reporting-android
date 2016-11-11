@@ -1,9 +1,11 @@
 package com.blogspot.techzealous.stunt;
 
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private Button mButtonSendReportString;
     private Button mButtonSendReportBitmap;
     private Button mButtonSendReportFile;
+    private Button mButtonSendClientInfo;
     private TextView mTextViewTime;
 
     private int mCount;
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         mButtonSendReportString = (Button)findViewById(R.id.buttonSendReportString);
         mButtonSendReportBitmap = (Button)findViewById(R.id.buttonSendReportBitmap);
         mButtonSendReportFile = (Button)findViewById(R.id.buttonSendReportFile);
+        mButtonSendClientInfo = (Button)findViewById(R.id.buttonSendClientInfo);
         mTextViewTime = (TextView)findViewById(R.id.textViewTime);
 
         mButtonSendReportString.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +81,16 @@ public class MainActivity extends AppCompatActivity {
 
                 Stunt stunt = Stunt.getInstance(MainActivity.this);
                 stunt.report("Saved text.txt", fileText);
+                mCount++;
+            }
+        });
+
+        mButtonSendClientInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Stunt stunt = Stunt.getInstance(MainActivity.this);
+                setTime(System.currentTimeMillis());
+                stunt.reportClientInfo("MyDevice", Build.MANUFACTURER, Build.MODEL, Build.SERIAL);
                 mCount++;
             }
         });

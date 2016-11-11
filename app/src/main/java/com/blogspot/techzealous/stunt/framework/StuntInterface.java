@@ -11,6 +11,7 @@ public interface StuntInterface {
     public void report(String aMessage, Bitmap aBitmap, String aFileName);
     public void reportFile(String aMessage, String aFilePath, String aFileName);
     public void report(String aMessage, File aFile);
+    public void reportClientInfo(String aName, String aManufacturer, String aModel, String aDeviceId);
 
     public void setLoggingEnabled(boolean aIsEnabled);
     public boolean getLoggingEnabled();

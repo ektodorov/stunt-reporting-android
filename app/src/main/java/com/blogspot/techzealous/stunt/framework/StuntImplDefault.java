@@ -4,10 +4,21 @@ package com.blogspot.techzealous.stunt.framework;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import static com.blogspot.techzealous.stunt.framework.StuntConst.API_KEY;
+import static com.blogspot.techzealous.stunt.framework.StuntConst.API_KEY_clientid;
+import static com.blogspot.techzealous.stunt.framework.StuntConst.API_KEY_clientinfo_deviceid;
+import static com.blogspot.techzealous.stunt.framework.StuntConst.API_KEY_clientinfo_manufacturer;
+import static com.blogspot.techzealous.stunt.framework.StuntConst.API_KEY_clientinfo_model;
+import static com.blogspot.techzealous.stunt.framework.StuntConst.API_KEY_clientinfo_name;
+import static com.blogspot.techzealous.stunt.framework.StuntConst.API_KEY_sequence;
 
 public class StuntImplDefault implements StuntInterface {
 
@@ -64,6 +75,28 @@ public class StuntImplDefault implements StuntInterface {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void reportClientInfo(String aName, String aManufacturer, String aModel, String aDeviceId) {
+        try {
+            URL url = new URL(StuntConst.URL_clientinfo);
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put(API_KEY, StuntConst.getApiKey());
+            jsonBody.put(API_KEY_clientid, StuntConst.getClientId());
+            jsonBody.put(API_KEY_clientinfo_name, aName);
+            jsonBody.put(API_KEY_clientinfo_manufacturer, aManufacturer);
+            jsonBody.put(API_KEY_clientinfo_model, aModel);
+            jsonBody.put(API_KEY_clientinfo_deviceid, aDeviceId);
+            jsonBody.put(API_KEY_sequence, StuntConst.getSequence());
+            String strResponse = StuntConst.getResponse(url, jsonBody);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }

@@ -145,6 +145,16 @@ public class Stunt extends Object implements StuntInterface {
     }
 
     @Override
+    public void reportClientInfo(final String aName, final String aManufacturer, final String aModel, final String aDeviceId) {
+        mExecutorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                mImpl.reportClientInfo(aName, aManufacturer, aModel, aDeviceId);
+            }
+        });
+    }
+
+    @Override
     public void setLoggingEnabled(boolean aIsEnabled) {
         mImpl.setLoggingEnabled(aIsEnabled);
     }
