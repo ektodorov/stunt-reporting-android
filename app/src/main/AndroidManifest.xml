@@ -21,7 +21,7 @@
         </activity>
 
         <meta-data android:name="stunt_enabled" android:value="true"/>
-        <meta-data android:name="stunt_api_key" android:value="9bfbc67016db4a2675dc635ec6eef1d4"/>
+        <meta-data android:name="stunt_api_key" android:value="e0eb05a55ba24c174bce84a747493df1"/>
     </application>
 
 </manifest>
