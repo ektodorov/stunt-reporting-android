@@ -35,7 +35,7 @@ public class StuntConst {
     private static String sClientId;
     private static long sSequence;
 
-    public static final String URL_service = "http://192.168.0.100:8080";
+    public static final String URL_service = "http://192.168.0.102:8080";
     public static final String URL_echo = URL_service + "/echo";
     public static final String URL_message = URL_service + "/message";
     public static final String URL_clientinfo = URL_service + "/sendclientinfo";
