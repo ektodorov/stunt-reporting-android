@@ -35,12 +35,11 @@ public class StuntConst {
     private static String sClientId;
     private static long sSequence;
 
-    public static final String URL_service = "http://192.168.0.102:8080";
-    public static final String URL_echo = URL_service + "/echo";
-    public static final String URL_message = URL_service + "/message";
-    public static final String URL_clientinfo = URL_service + "/sendclientinfo";
-    public static final String URL_uploadimage = URL_service + "/uploadimage";
-    public static final String URL_uploadfile = URL_service + "/uploadfile";
+    public static String URL_service = "http://192.168.0.102:8080";
+    private static String URL_message = URL_service + "/message";
+    private static String URL_clientinfo = URL_service + "/sendclientinfo";
+    private static String URL_uploadimage = URL_service + "/uploadimage";
+    private static String URL_uploadfile = URL_service + "/uploadfile";
 
     public static final int REPORTRATE_INSTANT = 0;
     public static final int REPORTRATE_TIME = 1;
@@ -65,6 +64,7 @@ public class StuntConst {
     public static final String STR_multipart_form_data_boundary = "multipart/form-data;boundary=" + STR_boundary;
     public static final String STR_ENCTYPE = "ENCTYPE";
     public static final String STR_application_json_charset_utf8 = "application/json; charset=utf-8";
+    public static final String STR_Change_service_url = "Change service URL";
 
     public static final String API_KEY = "apikey";
     public static final String API_KEY_STUNT_API_KEY = "stunt_api_key";
@@ -110,6 +110,22 @@ public class StuntConst {
 
     public static long getSequence() {
         return sSequence;
+    }
+
+    public static String getUrlMessage() {
+        return URL_service + URL_message;
+    }
+
+    public static String getUrlClientInfo() {
+        return URL_service + URL_clientinfo;
+    }
+
+    public static String getUrlUploadImage() {
+        return URL_service + URL_uploadimage;
+    }
+
+    public static String getUrlUploadFile() {
+        return URL_service + URL_uploadfile;
     }
 
     public static ByteArrayOutputStream gzip(byte[] input) throws Exception {

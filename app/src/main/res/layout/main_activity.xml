@@ -13,6 +13,36 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- Toolbar -->
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbarMain"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/colorPrimary">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/buttonMenuMain"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_centerVertical="true"
+                    android:background="@color/colorPrimary"/>
+
+                <TextView
+                    android:id="@+id/textViewTitleToolbarMain"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:text="@string/app_name" />
+            </RelativeLayout>
+
+        </android.support.v7.widget.Toolbar>
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -34,7 +34,7 @@ public class StuntImplDefault implements StuntInterface {
     @Override
     public void report(String aString) {
         try {
-            URL url = new URL(StuntConst.URL_message);
+            URL url = new URL(StuntConst.getUrlMessage());
             String strResponse = StuntConst.getResponse(url, aString);
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -46,7 +46,7 @@ public class StuntImplDefault implements StuntInterface {
     @Override
     public void report(String aMessage, Bitmap aBitmap, String aFileName) {
         try {
-            URL url = new URL(StuntConst.URL_uploadimage);
+            URL url = new URL(StuntConst.getUrlUploadImage());
             String strResponse = StuntConst.uploadBitmap(url, aMessage, aBitmap, aFileName);
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -58,7 +58,7 @@ public class StuntImplDefault implements StuntInterface {
     @Override
     public void reportFile(String aMessage, String aFilePath, String aFileName) {
         try {
-            URL url = new URL(StuntConst.URL_uploadfile);
+            URL url = new URL(StuntConst.getUrlUploadFile());
             String strResponse = StuntConst.uploadFile(url, aMessage, aFilePath, aFileName);
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -70,7 +70,7 @@ public class StuntImplDefault implements StuntInterface {
     @Override
     public void report(String aMessage, File aFile) {
         try {
-            URL url = new URL(StuntConst.URL_uploadfile);
+            URL url = new URL(StuntConst.getUrlUploadFile());
             String strResponse = StuntConst.uploadFile(url, aMessage, aFile.getAbsolutePath(), aFile.getName());
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -82,7 +82,7 @@ public class StuntImplDefault implements StuntInterface {
     @Override
     public void reportClientInfo(String aName, String aManufacturer, String aModel, String aDeviceId) {
         try {
-            URL url = new URL(StuntConst.URL_clientinfo);
+            URL url = new URL(StuntConst.getUrlClientInfo());
             JSONObject jsonBody = new JSONObject();
             jsonBody.put(API_KEY, StuntConst.getApiKey());
             jsonBody.put(API_KEY_clientid, StuntConst.getClientId());

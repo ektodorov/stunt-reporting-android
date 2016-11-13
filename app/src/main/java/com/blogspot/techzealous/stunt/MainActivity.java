@@ -1,16 +1,23 @@
 package com.blogspot.techzealous.stunt;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.blogspot.techzealous.stunt.framework.Stunt;
+import com.blogspot.techzealous.stunt.framework.StuntConst;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,12 +28,15 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     private View mViewRoot;
+    private Toolbar mToolbar;
     private Button mButtonSendReportString;
     private Button mButtonSendReportBitmap;
     private Button mButtonSendReportFile;
     private Button mButtonSendClientInfo;
     private TextView mTextViewTime;
 
+    private AlertDialog mAlertDialogServiceUrl;
+    private EditText mEditTextServiceUrl;
     private int mCount;
 
     @Override
@@ -35,11 +45,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main_activity);
 
         mViewRoot = (View)findViewById(R.id.scrollViewRoot);
+        mToolbar = (Toolbar)findViewById(R.id.toolbarMain);
         mButtonSendReportString = (Button)findViewById(R.id.buttonSendReportString);
         mButtonSendReportBitmap = (Button)findViewById(R.id.buttonSendReportBitmap);
         mButtonSendReportFile = (Button)findViewById(R.id.buttonSendReportFile);
         mButtonSendClientInfo = (Button)findViewById(R.id.buttonSendClientInfo);
         mTextViewTime = (TextView)findViewById(R.id.textViewTime);
+
+        mToolbar.inflateMenu(R.menu.menu_main);
+        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if(item.getItemId() == R.id.serviceurlMenuMain) {
+                    mAlertDialogServiceUrl.show();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         mButtonSendReportString.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +117,31 @@ public class MainActivity extends AppCompatActivity {
                 mCount++;
             }
         });
+
+        LayoutInflater inflater = (LayoutInflater)MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.serviceurl_layout, (ViewGroup)mViewRoot, false);
+        mEditTextServiceUrl = (EditText)view.findViewById(R.id.editTextServiceUrl);
+        mEditTextServiceUrl.setText(StuntConst.URL_service);
+        Button buttonNegative = (Button)view.findViewById(R.id.buttonNegativeServiceUrl);
+        Button buttonPositive = (Button)view.findViewById(R.id.buttonPositiveServiceUrl);
+        buttonNegative.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAlertDialogServiceUrl.dismiss();
+            }
+        });
+        buttonPositive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StuntConst.URL_service = mEditTextServiceUrl.getText().toString();
+                mAlertDialogServiceUrl.dismiss();
+            }
+        });
+
+        AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
+        adb.setTitle(StuntConst.STR_Change_service_url);
+        adb.setView(view);
+        mAlertDialogServiceUrl = adb.create();
     }
 
     public void setTime(long aTimeMillis) {
