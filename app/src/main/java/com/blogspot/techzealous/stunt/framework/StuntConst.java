@@ -7,7 +7,6 @@ import com.blogspot.techzealous.stunt.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -35,11 +34,11 @@ public class StuntConst {
     private static String sClientId;
     private static long sSequence;
 
-    public static String URL_service = "http://192.168.0.102:8080";
-    private static String URL_message = URL_service + "/message";
-    private static String URL_clientinfo = URL_service + "/sendclientinfo";
-    private static String URL_uploadimage = URL_service + "/uploadimage";
-    private static String URL_uploadfile = URL_service + "/uploadfile";
+    public static String URL_service = "http://192.168.170.29:8080";
+    private static String URL_message = "/message";
+    private static String URL_clientinfo = "/sendclientinfo";
+    private static String URL_uploadimage = "/uploadimage";
+    private static String URL_uploadfile = "/uploadfile";
 
     public static final int REPORTRATE_INSTANT = 0;
     public static final int REPORTRATE_TIME = 1;
@@ -180,7 +179,7 @@ public class StuntConst {
             JSONObject jsonBody = new JSONObject();
             jsonBody.put(API_KEY, sApiKey);
             jsonBody.put(API_KEY_sequence, sSequence);
-            jsonBody.put(API_KEY_time, System.currentTimeMillis());
+            jsonBody.put(API_KEY_time, (System.currentTimeMillis() / 1000));
             jsonBody.put(API_KEY_message, aMessage);
             jsonBody.put(API_KEY_clientid, sClientId);
             String strMessage = jsonBody.toString();
@@ -269,7 +268,7 @@ public class StuntConst {
             JSONObject jsonBody = new JSONObject();
             jsonBody.put(API_KEY, sApiKey);
             jsonBody.put(API_KEY_sequence, sSequence);
-            jsonBody.put(API_KEY_time, System.currentTimeMillis());
+            jsonBody.put(API_KEY_time, (System.currentTimeMillis() / 1000));
             jsonBody.put(API_KEY_message, aMessage);
             jsonBody.put(API_KEY_clientid, sClientId);
             String strMessage = jsonBody.toString();
@@ -345,7 +344,7 @@ public class StuntConst {
                 JSONObject jsonBody = new JSONObject();
                 jsonBody.put(API_KEY, sApiKey);
                 jsonBody.put(API_KEY_sequence, sSequence);
-                jsonBody.put(API_KEY_time, System.currentTimeMillis());
+                jsonBody.put(API_KEY_time, (System.currentTimeMillis() / 1000));
                 jsonBody.put(API_KEY_message, aMessage);
                 jsonBody.put(API_KEY_clientid, sClientId);
                 strBody = jsonBody.toString();
