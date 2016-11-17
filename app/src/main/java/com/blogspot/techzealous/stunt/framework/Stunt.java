@@ -2,6 +2,7 @@ package com.blogspot.techzealous.stunt.framework;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -24,7 +25,7 @@ public class Stunt extends Object implements StuntInterface {
     private static StuntInterface mImpl;
     private static boolean mIsReportingEnabled = true;
 
-    private WeakReference<Activity> mWeakContext;
+    private WeakReference<Context> mWeakContext;
     private ExecutorService mExecutorService;
     private Handler mHandlerUI;
     private int mReportRate;
@@ -35,14 +36,14 @@ public class Stunt extends Object implements StuntInterface {
         super();
     }
 
-    private Stunt(Activity aActivity) {
+    private Stunt(Context aContext) {
         super();
-        mWeakContext = new WeakReference<Activity>(aActivity);
+        mWeakContext = new WeakReference<Context>(aContext);
         mExecutorService = Executors.newSingleThreadExecutor();
         mHandlerUI = new Handler(Looper.getMainLooper());
 
         try {
-            ApplicationInfo ai = aActivity.getPackageManager().getApplicationInfo(aActivity.getPackageName(), PackageManager.GET_META_DATA);
+            ApplicationInfo ai = aContext.getPackageManager().getApplicationInfo(aContext.getPackageName(), PackageManager.GET_META_DATA);
             Bundle bundle = ai.metaData;
             StuntConst.setApiKey(bundle.getString(StuntConst.API_KEY_STUNT_API_KEY));
             mIsReportingEnabled = bundle.getBoolean(StuntConst.API_KEY_ENABLED);

@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Stunt stunt = Stunt.getInstance(MainActivity.this);
                 setTime(System.currentTimeMillis());
-                stunt.reportClientInfo("MyDevice", Build.MANUFACTURER, Build.MODEL, Build.SERIAL);
+                stunt.reportClientInfo(Build.MANUFACTURER + Build.MODEL, Build.MANUFACTURER, Build.MODEL, Build.SERIAL);
                 mCount++;
             }
         });
