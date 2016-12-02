@@ -1,5 +1,6 @@
 package com.blogspot.techzealous.stunt.framework;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.util.Log;
 
@@ -7,6 +8,7 @@ import com.blogspot.techzealous.stunt.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -24,7 +26,7 @@ import java.util.zip.GZIPOutputStream;
 
 public class StuntConst {
 
-    private static WeakReference<MainActivity> mWeakActivity;
+    private static WeakReference<Activity> mWeakActivity;
     private static final String TAG = "StuntConst";
 
     //Currently it is not used. Client is authenticated with the ApiKey, in order to skip registration and getting a token.
@@ -471,11 +473,11 @@ public class StuntConst {
         return headers.toString();
     }
 
-    public static void setMainActivity(MainActivity aActivity) {
-        mWeakActivity = new WeakReference<MainActivity>(aActivity);
+    public static void setActivity(Activity aActivity) {
+        mWeakActivity = new WeakReference<Activity>(aActivity);
     }
 
-    public static MainActivity getMainActivity() {
+    public static Activity getActivity() {
         return mWeakActivity.get();
     }
 }
