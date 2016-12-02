@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.blogspot.techzealous.stunt.MainActivity;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,12 +29,12 @@ public class StuntConst {
 
     //Currently it is not used. Client is authenticated with the ApiKey, in order to skip registration and getting a token.
     //In future we may switch to token authentication.
-    private static String sAuthToken;
+    private static String sAuthToken = "";
     private static String sApiKey;
     private static String sClientId;
     private static long sSequence;
 
-    public static String URL_service = "http://192.168.0.102:8080";
+    public static String URL_service = "http://192.168.0.100:8080";
     private static String URL_message = "/message";
     private static String URL_clientinfo = "/sendclientinfo";
     private static String URL_uploadimage = "/uploadimage";
@@ -352,13 +350,13 @@ public class StuntConst {
                 strBody = jsonBody.toString();
 
                 urlConnection.addRequestProperty(STR_Content_Length, Integer.toString(strBody.getBytes().length));
-                Log.i(TAG, "Headers=\n" + getRequestHeaders(urlConnection));
+//                Log.i(TAG, "Headers=\n" + getRequestHeaders(urlConnection));
                 dataOutputStream = new DataOutputStream(urlConnection.getOutputStream());
                 dataOutputStream.writeBytes(strBody);
                 //dataOutputStream.write(aMessage.getBytes());
                 dataOutputStream.flush();
             } else {
-                Log.i(TAG, "Headers=\n" + getRequestHeaders(urlConnection));
+//                Log.i(TAG, "Headers=\n" + getRequestHeaders(urlConnection));
             }
 
             Log.i(TAG, "url=" + url);
